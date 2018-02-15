@@ -30,15 +30,6 @@ services:
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_general_ci"
 
-  tasks-api-database:
-    image: "tasks-api-database"
-    container_name: "tasks-api-database"
-    environment:
-      - "TASKS_DATABASE_USER=root"
-      - "TASKS_DATABASE_PASS=root"
-      - "TASKS_DATABASE_HOST=tasks-mysql"
-      - "TASKS_DATABASE_PORT=3306"
-
   tasks-nginx:
     image: "nginx:alpine"
     container_name: "tasks-nginx"
@@ -48,18 +39,27 @@ services:
       - "./nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
       - "./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro"
 
+  tasks-api-database:
+    image: "tasks-api-database"
+    container_name: "tasks-api-database"
+    environment:
+      - "TASKS_DATABASE_USER=root"
+      - "TASKS_DATABASE_PASS=root"
+      - "TASKS_DATABASE_HOST=tasks-mysql"
+      - "TASKS_DATABASE_PORT=3306"
+
   tasks-api-task:
     image: "tasks-api-task"
     container_name: "tasks-api-task"
     environment:
-      - "TASKS_API_HOST=tasks-api-database"
+      - "TASKS_API_HOST=tasks-nginx"
       - "TASKS_API_PORT=80"
 
   tasks-api-tasks:
     image: "tasks-api-tasks"
     container_name: "tasks-api-tasks"
     environment:
-      - "TASKS_API_HOST=tasks-api-database"
+      - "TASKS_API_HOST=tasks-nginx"
       - "TASKS_API_PORT=80"
 
 volumes:
