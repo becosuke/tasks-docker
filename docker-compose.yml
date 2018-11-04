@@ -2,7 +2,7 @@ version: "3"
 
 services:
   tasks-golang:
-    image: "golang:alpine"
+    image: "tasks-golang"
     container_name: "tasks-golang"
     working_dir: "/go/src/github.com/becosuke/tasks-api"
     volumes:
