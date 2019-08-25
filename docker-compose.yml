@@ -8,8 +8,10 @@ services:
     environment:
       - "TASKS_ENV=local"
       - "TASKS_DATABASE_HOST_MASTER=tasks-mysql"
+      - "TASKS_DATABASE_PORT_MASTER=3306"
       - "TASKS_DATABASE_HOST_SLAVE=tasks-mysql"
-      - "TASKS_MEMCACHE_HOST=tasks-cache"
+      - "TASKS_DATABASE_PORT_SLAVE=3306"
+      - "TASKS_MEMCACHE_HOST=tasks-memcached1,tasks-memcached2"
     volumes:
       - "../tasks-api:/go/src/github.com/becosuke/tasks-api:cached"
     tty: "yes"
@@ -30,6 +32,24 @@ services:
       - "mysqld"
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_general_ci"
+
+  task-memcached1:
+    image: "memcached:alpine"
+    container_name: "task-memcache1"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+
+  task-memcached2:
+    image: "memcached:alpine"
+    container_name: "task-memcache2"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
 
   tasks-nginx:
     image: "nginx:alpine"
@@ -59,14 +79,15 @@ services:
     environment:
       - "TASKS_ENV=local"
       - "TASKS_DATABASE_HOST_MASTER=tasks-mysql"
+      - "TASKS_DATABASE_PORT_MASTER=3306"
       - "TASKS_DATABASE_HOST_SLAVE=tasks-mysql"
-      - "TASKS_MEMCACHE_HOST=tasks-cache"
+      - "TASKS_DATABASE_PORT_SLAVE=3306"
+      - "TASKS_MEMCACHE_HOST=tasks-memcached1,tasks-memcached2"
 
   tasks-api-rest:
     image: "tasks-api-rest"
     container_name: "tasks-api-rest"
     environment:
       - "TASKS_ENV=local"
-      - "TASKS_DATABASE_HOST_MASTER=tasks-mysql"
-      - "TASKS_DATABASE_HOST_SLAVE=tasks-mysql"
-      - "TASKS_MEMCACHE_HOST=tasks-cache"
+      - "TASKS_GRPC_HOST=tasks-api-grpc"
+      - "TASKS_GRPC_PORT=50551"
