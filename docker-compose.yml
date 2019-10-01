@@ -33,18 +33,18 @@ services:
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_general_ci"
 
-  task-memcached1:
+  tasks-memcached1:
     image: "memcached:alpine"
-    container_name: "task-memcache1"
+    container_name: "tasks-memcache1"
     ulimits:
       nproc: 65535
       nofile:
         soft: 20000
         hard: 40000
 
-  task-memcached2:
+  tasks-memcached2:
     image: "memcached:alpine"
-    container_name: "task-memcache2"
+    container_name: "tasks-memcache2"
     ulimits:
       nproc: 65535
       nofile:
