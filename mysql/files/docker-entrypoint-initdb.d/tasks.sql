@@ -76,6 +76,7 @@ DROP TABLE IF EXISTS `task`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `task` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `list_id` int(10) unsigned NOT NULL,
   `title` varchar(100) NOT NULL,
   `completed_at` datetime(6) DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
