@@ -1,3 +1,3 @@
 .PHONY: mysql
 mysql:
-	MYSQL_PWD=root mysql -uroot --default-character-set=utf8mb4
+	docker exec -e MYSQL_PWD=root -it tasks-mysql mysql -uroot --default-character-set=utf8mb4
